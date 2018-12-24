@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="cmxengagesdk">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/SDK_de_CMX_Engage_Advanced/CMXEngage-Android-SDK-3.7/cmxengagesdk.aar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

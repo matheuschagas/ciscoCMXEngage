@@ -12,5 +12,6 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="cmxengagesdk" level="project" />
   </component>
 </module>
