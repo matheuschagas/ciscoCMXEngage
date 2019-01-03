@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReadableArray;
 import com.july.cmxengage.CMXEngage;
 
 public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
@@ -19,7 +20,7 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setup(String customerAccessKey, String customerSecretKey, ReadableArray wifiSsids, String registrationIdFirebase, Promise promise) {
+    public void setup(String customerAccessKey, String customerSecretKey, String registrationIdFirebase, ReadableArray wifiSsids, Promise promise) {
         try {
             CMXEngage.enableLogs = true;
             CMXEngage.register(reactContext, customerAccessKey, customerSecretKey);
@@ -31,16 +32,6 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
             promise.resolve(true);
         } catch (Exception e) {
             promise.reject(e);
-        }
-    }
-
-    @ReactMethod
-    public void getMacAddress(Callback callback) {
-        try {
-            CMXEngage.getMacAddress(reactContext, callback);
-            callback('');
-        } catch (Exception e) {
-            callback(false);
         }
     }
 
@@ -86,25 +77,6 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
         try {
             CMXEngage.getDeviceSubscriber().setGender(gender);
             promise.resolve(true);
-        } catch (Exception e) {
-            promise.reject(e);
-        }
-    }
-
-    @ReactMethod
-    public void setUserFlag(String flag, boolean status, Promise promise) {
-        try {
-            CMXEngage.getDeviceSubscriber().setBool(flag, status, true);
-            promise.resolve(true);
-        } catch (Exception e) {
-            promise.reject(e);
-        }
-    }
-
-    @ReactMethod
-    public void getUserFlag(String flag, Promise promise) {
-        try {
-            promise.resolve(CMXEngage.getDeviceSubscriber().boolForKey(flag, true));
         } catch (Exception e) {
             promise.reject(e);
         }
@@ -182,16 +154,6 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
             promise.resolve();
         } catch (Exception e) {
             promise.reject(e);
-        }
-    }
-
-
-
-    @ReactMethod
-    public void addMacLookupListener(Callback callback) {
-        try {
-            this.onMacLookupResult = callback;
-            CMXEngageRegistration.addMacLookupListener(this);
         }
     }
 

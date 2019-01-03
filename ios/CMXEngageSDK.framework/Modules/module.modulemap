@@ -1,0 +1,6 @@
+framework module CMXEngageSDK {
+  umbrella header "CMXEngageSDK.h"
+
+  export *
+  module * { export * }
+}

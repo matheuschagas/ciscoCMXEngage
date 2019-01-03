@@ -27,7 +27,9 @@
 2. Append the following lines to `android/settings.gradle`:
   	```
   	include ':react-native-cisco-cmx-engage'
-  	project(':react-native-cisco-cmx-engage').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-cisco-cmx-engage/android')
+    project(':react-native-cisco-cmx-engage').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-cisco-cmx-engage/android')
+    include ':cmxengagesdk'
+    project(':cmxengagesdk').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-cisco-cmx-engage/android/cmxengagesdk')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
