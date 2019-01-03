@@ -25,9 +25,9 @@ RCT_EXPORT_MODULE();
 
 - (UIViewController *)getRootViewController
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    return app.window.rootViewController;
+    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+
+    return rootViewController;
 }
 
 - (void) cmxEngageDidFinishRegistration:(CMXEngage *)cmxEngage{ // your code
@@ -35,85 +35,87 @@ RCT_EXPORT_MODULE();
 - (void)cmxEngageDidFailToRegisterWithError:(NSError *)error{ // your code
 }
 
-RCT_EXPORT_METHOD(setup:(NSString *)customerAccessKey CustomerSecretKey:(NSString *)customerSecretKey RegistrationIdFirebase:(NSString *)registrationIdFirebase WifiSsids:(NSArray *)wifiSsids resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(setup:(NSString *)customerAccessKey CustomerSecretKey:(NSString *)customerSecretKey RegistrationIdFirebase:(NSString *)deviceToken WifiSsids:(NSArray *)wifiSsids resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [[CMXEngage sharedInstance] registerWithAccessKey:*customerAccessKey secretKey:*customerSecretKey];
+    [[CMXEngage sharedInstance] registerWithAccessKey:customerAccessKey secretKey:customerSecretKey];
     [[CMXEngage sharedInstance] registerDeviceTokenForPushNotification:deviceToken];
 }
 
 RCT_EXPORT_METHOD(setFirstName:(NSString *)firstName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [CMXEngage sharedInstance].deviceSubscriber.firstName = firstName;
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setFirstName", @"exception", e);
     }
 }
 
 RCT_EXPORT_METHOD(setLastName:(NSString *)lastName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [CMXEngage sharedInstance].deviceSubscriber.lastName = lastName;
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setLastName", @"exception", e);
     }
 }
 
 RCT_EXPORT_METHOD(setEmail:(NSString *)email resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [CMXEngage sharedInstance].deviceSubscriber.email = email;
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setEmail", @"exception", e);
     }
 }
 
 RCT_EXPORT_METHOD(setMobileNumber:(NSString *)mobileNumber resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [CMXEngage sharedInstance].deviceSubscriber.mobileNumber = mobileNumber;
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setMobileNumber", @"exception", e);
     }
 }
 
 RCT_EXPORT_METHOD(setGender:(NSString *)gender resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [CMXEngage sharedInstance].deviceSubscriber.gender = gender;
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setGender", @"exception", e);
     }
 }
 
-RCT_EXPORT_METHOD(setUserProp:(NSString *)propName PropValue(BOOL *):propValue resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(setUserProp:(NSString *)propName PropValue:(BOOL *)propValue resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [[CMXEngage sharedInstance].deviceSubscriber setBool:propValue forKey:propName shared:NO];
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setUserProp", @"exception", e);
     }
 }
 
 RCT_EXPORT_METHOD(getUserProp:(NSString *)propName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
-        resolve([[CMXEngage sharedInstance].deviceSubscriber boolForKey:propName shared:NO]);
+        BOOL authorized = [[CMXEngage sharedInstance].deviceSubscriber boolForKey:propName shared:NO];
+        NSDictionary *auth = @{@"authorized" : [NSNumber numberWithBool:authorized]};
+        resolve(auth);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"getUserProp", @"exception", e);
     }
 }
 
@@ -123,7 +125,7 @@ RCT_EXPORT_METHOD(getSubscriberID:(RCTPromiseResolveBlock)resolve rejecter:(RCTP
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"getSubscriberID", @"exception", e);
     }
 }
 
@@ -133,7 +135,7 @@ RCT_EXPORT_METHOD(getCustomer:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromi
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"getCustomer", @"exception", e);
     }
 }
 
@@ -143,39 +145,39 @@ RCT_EXPORT_METHOD(getCountry:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"getCountry", @"exception", e);
     }
 }
 
-RCT_EXPORT_METHOD(getProperty:(NSString *)prop resolver(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(getProperty:(NSString *)prop resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         resolve([[CMXEngage sharedInstance].deviceSubscriber property:prop]);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"getProperty", @"exception", e);
     }
 }
 
-RCT_EXPORT_METHOD(setProperty:(NSString *)prop PropertyValue(NSString *)propValue resolver(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(setProperty:(NSString *)prop PropertyValue:(NSString *)propValue resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [[CMXEngage sharedInstance].deviceSubscriber setProperty:prop value:propValue];
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"setProperty", @"exception", e);
     }
 }
 
 RCT_EXPORT_METHOD(savePreferencesNow:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     @try {
         [[CMXEngage sharedInstance].deviceSubscriber saveNow];
-        resolve();
+        resolve(nil);
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        rejecter(e);
+        reject(@"savePreferencesNow", @"exception", e);
     }
 }
 
