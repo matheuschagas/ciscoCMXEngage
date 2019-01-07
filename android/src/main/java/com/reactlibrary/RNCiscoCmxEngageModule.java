@@ -9,8 +9,6 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.july.cmxengage.CMXEngage;
 
-import java.util.ArrayList;
-
 public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
@@ -107,7 +105,7 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getSubscriberID(Promise promise) {
         try {
-            promise.resolve(CMXEngage.getDeviceSubscriber().getId());
+            promise.resolve(CMXEngage.getDeviceSubscriber());
         } catch (Exception e) {
             promise.reject(e);
         }
