@@ -22,9 +22,9 @@ INJECTED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/m
 	xmlns:android
 		ADDED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/main/AndroidManifest.xml:2:11-69
 meta-data#com.google.firebase.messaging.default_notification_icon
-ADDED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/main/AndroidManifest.xml:4:5-134
+ADDED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/main/AndroidManifest.xml:4:5-137
 	android:resource
-		ADDED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/main/AndroidManifest.xml:4:87-131
+		ADDED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/main/AndroidManifest.xml:4:87-134
 	android:name
 		ADDED from /Users/matheuschagas/WebstormProjects/ciscoCMXEngage/android/src/main/AndroidManifest.xml:4:16-86
 meta-data#com.google.firebase.messaging.default_notification_color

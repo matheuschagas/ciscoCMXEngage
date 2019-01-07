@@ -9,6 +9,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.july.cmxengage.CMXEngage;
 
+import java.util.ArrayList;
+
 public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
@@ -19,14 +21,16 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
         this.reactContext = reactContext;
     }
 
+
     @ReactMethod
     public void setup(String customerAccessKey, String customerSecretKey, String registrationIdFirebase, ReadableArray wifiSsids, Promise promise) {
         try {
             CMXEngage.enableLogs = true;
             CMXEngage.register(reactContext, customerAccessKey, customerSecretKey);
-            CMXEngage.registerRegistrationID(registrationIdFirebase);
+            CMXEngage.registerRegistrationID(reactContext, registrationIdFirebase);
             CMXEngage.installWiFiProfile(true);
-            for (String ssid: wifiSsids) {
+            for (int i = 0; i < wifiSsids.size(); i++) {
+                String ssid = wifiSsids.getString(i);
                 CMXEngage.autoConnect(ssid);
             }
             promise.resolve(true);
@@ -34,7 +38,6 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
             promise.reject(e);
         }
     }
-
     @ReactMethod
     public void setFirstName(String firstName, Promise promise) {
         try {
@@ -83,7 +86,7 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setUserProp(String propName, boolean propValue, Promise promise) {
+    public void setUserProp(String propName, String propValue, Promise promise) {
         try {
             CMXEngage.getDeviceSubscriber().setString(propName,propValue,true);
             promise.resolve(true);
@@ -151,7 +154,7 @@ public class RNCiscoCmxEngageModule extends ReactContextBaseJavaModule {
     public void savePreferencesNow(Promise promise) {
         try {
             CMXEngage.getDeviceSubscriber().saveNow();
-            promise.resolve();
+            promise.resolve(true);
         } catch (Exception e) {
             promise.reject(e);
         }
